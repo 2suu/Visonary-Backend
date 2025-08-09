@@ -16,7 +16,7 @@ public class FirebaseInitializer {
         try {
             InputStream serviceAccount = getClass()
                     .getClassLoader()
-                    .getResourceAsStream("firebase/visonary-d749f-firebase-adminsdk-fbsvc-1f8ac692fc.json");
+                    .getResourceAsStream("firebase-service-key.json");
 
             FirebaseOptions options = FirebaseOptions.builder()
                     .setCredentials(GoogleCredentials.fromStream(serviceAccount))
@@ -24,11 +24,11 @@ public class FirebaseInitializer {
 
             if (FirebaseApp.getApps().isEmpty()) {
                 FirebaseApp.initializeApp(options);
-                System.out.println("✅ Firebase initialized successfully.");
+                System.out.println("Firebase initialized successfully.");
             }
         } catch (Exception e) {
             e.printStackTrace();
-            System.out.println("❌ Firebase initialization failed.");
+            System.out.println("Firebase initialization failed.");
         }
     }
 }
