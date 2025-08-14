@@ -1,0 +1,67 @@
+name: backend-ci
+
+on:
+  pull_request:
+    branches: [ develop, main ]
+    paths:
+      - "**"
+      - ".github/workflows/backend-ci.yml"
+  push:
+    branches: [ develop ]
+    paths:
+      - "**"
+      - ".github/workflows/backend-ci.yml"
+
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # 🔎 디렉터리 트리 디버그 (현재 위치/목록/2단계 트리)
+      - name: Debug working directory layout
+        run: |
+          echo "PWD:" && pwd
+          echo
+          echo "ls -la (.)" && ls -la
+          echo
+          echo "find . -maxdepth 2 -type d | sort"
+          find . -maxdepth 2 -type d | sort
+
+      # 🔎 전체 트리 로그를 파일로 저장 후 아티팩트 업로드
+      - name: Save tree to file
+        run: |
+          echo "== PWD ==" > ci-tree.txt
+          pwd >> ci-tree.txt
+          echo -e "\n== ls -la ==" >> ci-tree.txt
+          ls -la >> ci-tree.txt
+          echo -e "\n== find (maxdepth=4) ==" >> ci-tree.txt
+          find . -maxdepth 4 -print >> ci-tree.txt
+
+      - name: Upload directory tree (artifact)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: backend-ci-tree
+          path: ci-tree.txt
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+          cache: gradle
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      # 통합테스트가 무겁다면 -x integrationTest 로 분리 가능
+      - name: Build & Test
+        run: ./gradlew clean test build
+
+      - name: Upload test reports (always)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: backend-test-reports
+          path: build/reports/tests/test
