@@ -1,4 +1,4 @@
-package esu.visionary.model;
+package esu.visionary.domain.user.model;
 
 public class User {
 

@@ -1,4 +1,4 @@
-package esu.visionary.jwt;
+package esu.visionary.domain.user.jwt;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;

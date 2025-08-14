@@ -1,4 +1,4 @@
-package esu.visionary.dto;
+package esu.visionary.domain.user.dto;
 
 public class VerifyRequest {
 

@@ -1,22 +1,22 @@
-package esu.visionary;
+package esu.visionary.bootstrap.config;
 
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
+import jakarta.annotation.PostConstruct;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
-import java.io.InputStream;
+import java.io.FileInputStream;
+import java.io.IOException;
 
 @Component
-public class FirebaseInitializer {
+public class FirebaseConfig {
 
     @PostConstruct
     public void initialize() {
         try {
-            InputStream serviceAccount = getClass()
-                    .getClassLoader()
-                    .getResourceAsStream("firebase/visonary-d749f-firebase-adminsdk-fbsvc-1f8ac692fc.json");
+            FileInputStream serviceAccount =
+                    new FileInputStream("src/main/resources/firebase-service-key.json");
 
             FirebaseOptions options = FirebaseOptions.builder()
                     .setCredentials(GoogleCredentials.fromStream(serviceAccount))
@@ -24,11 +24,10 @@ public class FirebaseInitializer {
 
             if (FirebaseApp.getApps().isEmpty()) {
                 FirebaseApp.initializeApp(options);
-                System.out.println("✅ Firebase initialized successfully.");
+                System.out.println("✅ Firebase 초기화 완료");
             }
-        } catch (Exception e) {
+        } catch (IOException e) {
             e.printStackTrace();
-            System.out.println("❌ Firebase initialization failed.");
         }
     }
 }

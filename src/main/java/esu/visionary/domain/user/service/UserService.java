@@ -1,9 +1,8 @@
-package esu.visionary.service;
+package esu.visionary.domain.user.service;
 
-import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.*;
 import com.google.firebase.cloud.FirestoreClient;
-import esu.visionary.model.User;
+import esu.visionary.domain.user.model.User;
 import org.springframework.stereotype.Service;
 
 import java.util.concurrent.ExecutionException;

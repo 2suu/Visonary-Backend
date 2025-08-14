@@ -1,6 +1,6 @@
 // esu.visionary.dto.SignupRequest.java
 
-package esu.visionary.dto;
+package esu.visionary.domain.user.dto;
 
 public class SignupRequest {
     private String id;

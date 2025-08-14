@@ -1,4 +1,4 @@
-package esu.visionary.jwt;
+package esu.visionary.domain.user.jwt;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;

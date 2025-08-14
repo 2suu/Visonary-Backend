@@ -1,4 +1,4 @@
-package esu.visionary.service;
+package esu.visionary.domain.user.service;
 
 import com.google.cloud.firestore.Firestore;
 import com.google.firebase.cloud.FirestoreClient;

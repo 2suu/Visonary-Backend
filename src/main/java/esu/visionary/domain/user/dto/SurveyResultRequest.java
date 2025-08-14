@@ -1,4 +1,4 @@
-package esu.visionary.dto;
+package esu.visionary.domain.user.dto;
 
 import java.util.List;
 import java.util.Map;
