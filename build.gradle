@@ -63,10 +63,15 @@ dependencies {
 
 	// MySQL, Redis 컨테이너
 	testImplementation 'org.testcontainers:mysql:1.20.2'
-	testImplementation 'org.testcontainers:redis:1.20.2'
 }
 
-
+test {
+	useJUnitPlatform()
+	// Support/기반 클래스는 테스트 수집에서 제외
+	exclude '**/IntegrationTestSupport.*'
+	exclude '**/*Support.*'
+	exclude '**/support/**'
+}
 
 tasks.named('test') {
 	useJUnitPlatform()
