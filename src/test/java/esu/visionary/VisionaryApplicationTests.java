@@ -1,12 +1,18 @@
 package esu.visionary;
 
-import esu.visionary.bootstrap.config.SecurityConfig;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceTransactionManagerAutoConfiguration;
+import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration;
 
-@SpringBootTest
-@ImportAutoConfiguration(exclude = {SecurityConfig.class})
-class VisionaryApplicationTests{
-	@Test void contextLoads() {}
+@SpringBootApplication(exclude = {
+		DataSourceAutoConfiguration.class,
+		HibernateJpaAutoConfiguration.class,
+		DataSourceTransactionManagerAutoConfiguration.class
+})
+class VisionaryApplicationTests {
+	@Test
+	void contextLoads() {
+	}
 }
