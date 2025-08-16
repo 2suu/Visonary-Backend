@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: visionary
+
+  # 기본 활성 프로필
+  profiles:
+    active: local
