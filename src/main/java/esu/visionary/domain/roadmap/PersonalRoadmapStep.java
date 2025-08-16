@@ -2,6 +2,8 @@ package esu.visionary.domain.roadmap;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -39,6 +41,7 @@ public class PersonalRoadmapStep {
     @Column(name = "stage", columnDefinition = "json")
     private String stage;
 
+    @JdbcTypeCode(SqlTypes.TINYINT)
     @Column(name = "done_percent", nullable = false)
     private int donePercent; // 0~100
 

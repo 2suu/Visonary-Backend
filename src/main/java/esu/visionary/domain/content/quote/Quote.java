@@ -31,10 +31,6 @@ public class Quote {
     @Column(length = 100)
     private String category;
 
-    @Column(length = 10)
-    @Builder.Default
-    private String language = "ko";  // DB 기본값과 일치
-
     @CreatedDate
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
