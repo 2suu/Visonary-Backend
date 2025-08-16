@@ -1,6 +1,7 @@
 package esu.visionary.bootstrap.config;
 
 import esu.visionary.infrastructure.security.jwt.JwtFilter;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -13,12 +14,10 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
+@RequiredArgsConstructor
 public class SecurityConfig {
 
-    @Bean
-    public JwtFilter jwtFilter() {
-        return new JwtFilter();
-    } //매 요청마다 토큰이 유효한지 검사
+    private final JwtFilter jwtFilter;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -42,7 +41,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/survey/**").permitAll()      // 설문 API도 허용
                         .anyRequest().authenticated()                       // 그 외는 인증 필요
                 )
-                .addFilterBefore(jwtFilter(), UsernamePasswordAuthenticationFilter.class); // 스프링 기본 필터보다 JWT 필터가 먼저 작동될 수 있게함
+                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class); // 스프링 기본 필터보다 JWT 필터가 먼저 작동될 수 있게함
 
         return http.build();
     }

@@ -17,8 +17,8 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 
 @SpringBootTest
 @ExtendWith(SpringExtension.class)
-@Testcontainers
 @ActiveProfiles("test")
+@Testcontainers(disabledWithoutDocker = true) // Docker 없으면 skip
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public abstract class IntegrationTestSupport {
 
