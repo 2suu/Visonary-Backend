@@ -36,9 +36,24 @@ out/
 ### VS Code ###
 .vscode/
 
+### Logs ###
+*.log
+logs/
+*.out
+
 ### Secrets ###
 src/main/resources/firebase/*.json
 application-*.yml
 *.p12
 *.jks
 *.pem
+
+### Secrets & Config ###
+# Environment variables
+.env
+.env.*
+
+# Spring profiles (환경별 설정은 git에 올리지 않음)
+application-*.yml
+application-*.yaml
+application-*.properties
