@@ -1,4 +1,4 @@
-package esu.visionary.domain.user.dto;
+package esu.visionary.api.survey.request;
 
 import java.util.List;
 import java.util.Map;

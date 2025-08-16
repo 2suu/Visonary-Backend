@@ -1,11 +1,11 @@
-package esu.visionary.domain.user.controller;
+package esu.visionary.api.user.controller;
 
-import esu.visionary.domain.user.dto.SignupRequest;
-import esu.visionary.domain.user.dto.VerifyRequest;
-import esu.visionary.domain.user.dto.LoginRequest;
-import esu.visionary.domain.user.jwt.JwtUtil;
+import esu.visionary.api.user.request.SignupRequest;
+import esu.visionary.api.user.request.VerifyRequest;
+import esu.visionary.api.user.request.LoginRequest;
+import esu.visionary.infrastructure.security.jwt.JwtUtil;
 import esu.visionary.domain.user.model.User;
-import esu.visionary.domain.user.service.UserService;
+import esu.visionary.application.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;

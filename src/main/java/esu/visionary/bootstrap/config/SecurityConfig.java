@@ -1,6 +1,6 @@
 package esu.visionary.bootstrap.config;
 
-import esu.visionary.domain.user.jwt.JwtFilter;
+import esu.visionary.infrastructure.security.jwt.JwtFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;

@@ -1,4 +1,4 @@
-package esu.visionary.domain.user.service;
+package esu.visionary.application.user.service;
 
 import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.Firestore;

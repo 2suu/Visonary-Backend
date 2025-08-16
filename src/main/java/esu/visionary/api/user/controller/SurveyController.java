@@ -1,10 +1,10 @@
-package esu.visionary.domain.user.controller;
+package esu.visionary.api.user.controller;
 
 import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.DocumentSnapshot;
 import com.google.cloud.firestore.Firestore;
 import com.google.firebase.cloud.FirestoreClient;
-import esu.visionary.domain.user.dto.SurveyResultRequest;
+import esu.visionary.api.survey.request.SurveyResultRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
