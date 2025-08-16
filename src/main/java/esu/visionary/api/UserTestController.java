@@ -1,6 +1,7 @@
-package esu.visionary.api.test.controller;
+package esu.visionary.api;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -16,7 +17,11 @@ import java.util.List;
 public class UserTestController {
 
     // ✅ 간단한 GET API
-    @Operation(summary = "모든 사용자 조회", description = "등록된 모든 사용자를 조회합니다.")
+    @Operation(
+            summary = "모든 사용자 조회",
+            description = "등록된 모든 사용자를 조회합니다.",
+            security = @SecurityRequirement(name = "") // 🔑 JWT 요구 해제
+    )
     @GetMapping
     public ResponseEntity<List<UserResponse>> getAllUsers() {
         return ResponseEntity.ok(
