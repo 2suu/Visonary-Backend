@@ -3,12 +3,14 @@ package esu.visionary.bootstrap;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.io.InputStream;
 
 @Component
+@Profile("!test")
 public class FirebaseInitializer {
 
     @PostConstruct
