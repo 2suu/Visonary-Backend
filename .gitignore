@@ -57,3 +57,6 @@ application-*.yml
 application-*.yml
 application-*.yaml
 application-*.properties
+
+# 단, 테스트 설정은 버전 관리에 포함
+!src/test/resources/application-test.yml
