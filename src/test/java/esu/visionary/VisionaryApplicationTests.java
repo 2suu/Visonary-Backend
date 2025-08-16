@@ -4,10 +4,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class VisionaryApplicationTests{
-
-	@Test
-	void contextLoads() {
-	}
-
+class VisionaryApplicationTests extends IntegrationTestSupport{
+	@Test void contextLoads() {}
 }

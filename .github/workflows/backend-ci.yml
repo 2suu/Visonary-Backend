@@ -18,7 +18,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # 🔎 디렉터리 트리 디버그 (현재 위치/목록/2단계 트리)
+      # 디렉터리 트리 디버그 (현재 위치/목록/2단계 트리)
       - name: Debug working directory layout
         run: |
           echo "PWD:" && pwd
@@ -28,7 +28,7 @@ jobs:
           echo "find . -maxdepth 2 -type d | sort"
           find . -maxdepth 2 -type d | sort
 
-      # 🔎 전체 트리 로그를 파일로 저장 후 아티팩트 업로드
+      # 전체 트리 로그를 파일로 저장 후 아티팩트 업로드
       - name: Save tree to file
         run: |
           echo "== PWD ==" > ci-tree.txt
