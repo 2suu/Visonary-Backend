@@ -48,11 +48,31 @@ jwt:
   secret: "${JWT_SECRET}"  # 환경변수로 덮어쓰기
 
 firebase:
-  # 아래 둘 중 하나를 사용 (권장: 환경변수 GOOGLE_APPLICATION_CREDENTIALS)
-  use-google-default-credentials: true
-  service-account-json-path: "${FIREBASE_CREDENTIALS_PATH:}"  # ex) file:/etc/secret/firebase.json
+  enabled: false   # 공통으로 쓰려면 true, 운영에서 안 쓰면 false
+  credentials:
+    path: ${FIREBASE_CREDENTIALS_PATH:}      # 파일 경로 or classpath
+    base64: ${FIREBASE_CREDENTIALS_BASE64:}  # 환경변수 방식일 때만
 
 logging:
   level:
     org.hibernate.SQL: info
     org.hibernate.orm.jdbc.bind: info  # 파라미터 로깅(개발 중에만 올리기)
+
+# Swagger 설정
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui
+  packages-to-scan: esu.visionary.api  # 컨트롤러 패키지 루트
+  default-consumes-media-type: application/json
+  default-produces-media-type: application/json
+
+app:
+  api:
+    title: Visionary API
+    description: Career/Assessment backend
+    version: v1
+    server-url: http://localhost:8080
+

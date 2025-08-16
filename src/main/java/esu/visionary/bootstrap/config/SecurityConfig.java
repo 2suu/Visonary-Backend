@@ -39,6 +39,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/**").permitAll()        // 본인 인증/회원가입 허용
                         .requestMatchers("/api/survey/**").permitAll()      // 설문 API도 허용
+                        .requestMatchers("/api/users/**").permitAll() // 추가
+                        .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/health", "/", "/api/**").permitAll()
                         .anyRequest().authenticated()                       // 그 외는 인증 필요
                 )
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class); // 스프링 기본 필터보다 JWT 필터가 먼저 작동될 수 있게함
