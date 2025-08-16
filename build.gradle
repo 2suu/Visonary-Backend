@@ -57,6 +57,13 @@ dependencies {
 	// 테스트
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+	// Testcontainers (JUnit 5)
+	testImplementation 'org.testcontainers:junit-jupiter:1.20.2'
+
+	// MySQL, Redis 컨테이너
+	testImplementation 'org.testcontainers:mysql:1.20.2'
+	testImplementation 'org.testcontainers:redis:1.20.2'
 }
 
 
