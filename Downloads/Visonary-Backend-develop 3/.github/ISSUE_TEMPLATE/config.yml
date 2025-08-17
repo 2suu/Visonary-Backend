@@ -1,0 +1,6 @@
+blank_issues_enabled: true
+
+contact_links:
+  - name: 📄 프로젝트 위키
+    url: https://github.com/{owner}/{repo}/wiki
+    about: 기능 명세서, API 문서, 개발 가이드를 참고하세요.

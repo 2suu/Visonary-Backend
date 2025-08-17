@@ -1,0 +1,64 @@
+name: ✨ 기능 제안
+description: 새로운 기능이나 개선 사항을 제안해주세요.
+title: "[Feature] "
+labels: ["enhancement"]
+assignees: [] # 필요 시 기본 담당자 GitHub ID 입력
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## 📌 기능 제안 양식
+        새로운 기능이나 개선 사항을 제안해주셔서 감사합니다.
+        아래 항목을 빠짐없이 작성해주세요.
+
+  - type: textarea
+    id: overview
+    attributes:
+      label: 📌 개요
+      description: 제안하는 기능에 대한 간략한 설명을 작성해주세요.
+      placeholder: ex) 유저 프로필 편집 기능 추가
+    validations:
+      required: true
+
+  - type: textarea
+    id: purpose
+    attributes:
+      label: 💡 목적
+      description: 이 기능이 필요한 이유를 작성해주세요.
+      placeholder: ex) 사용자가 자신의 정보를 업데이트할 수 있도록 하기 위해
+    validations:
+      required: true
+
+  - type: textarea
+    id: tasks
+    attributes:
+      label: 🛠 작업 사항
+      description: 기능 구현을 위해 필요한 작업을 구체적으로 작성해주세요.
+      placeholder: |
+        - DB 테이블 수정
+        - API 엔드포인트 추가
+        - 프론트엔드 화면 수정
+    validations:
+      required: true
+
+  - type: textarea
+    id: checklist
+    attributes:
+      label: ✅ 체크리스트
+      description: 기능이 완료되기 위해 확인해야 하는 사항을 작성해주세요.
+      placeholder: |
+        - [ ] 모든 유효성 검사 통과
+        - [ ] 단위 테스트 작성 및 통과
+        - [ ] QA 테스트 완료
+    validations:
+      required: true
+
+  - type: textarea
+    id: reference
+    attributes:
+      label: 📚 참고
+      description: 관련 문서, 링크, 이슈 번호 등을 기재해주세요.
+      placeholder: ex) #12, 디자인 문서 링크
+    validations:
+      required: false
