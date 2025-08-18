@@ -1,14 +1,10 @@
 package esu.visionary.domain.user.model;
 
+import esu.visionary.common.entity.BaseTimeEntity;
 import esu.visionary.domain.user.enums.AuthProvider;
 import esu.visionary.domain.user.enums.UserStatus;
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-
-import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "users")
@@ -16,8 +12,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
-@EntityListeners(AuditingEntityListener.class)
-public class User2 {
+public class User2 extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -43,14 +38,6 @@ public class User2 {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
     private UserStatus status;   // ACTIVE/INACTIVE/DELETED
-
-    @CreatedDate
-    @Column(name = "created_at", nullable = false, updatable = false)
-    private LocalDateTime createdAt;
-
-    @LastModifiedDate
-    @Column(name = "updated_at", nullable = false)
-    private LocalDateTime updatedAt;
 
     // ==== 도메인 메서드 예시 ====
     public void changeNickname(String newNickname) {

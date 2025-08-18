@@ -6,11 +6,14 @@ import esu.visionary.api.user.request.LoginRequest;
 import esu.visionary.infrastructure.security.jwt.JwtUtil;
 import esu.visionary.domain.user.model.User;
 import esu.visionary.application.user.service.UserService;
+import esu.visionary.common.sms.SmsService; // ✅ 추가: 문자 발송 서비스
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import jakarta.validation.Valid;
 
 import java.util.*;
 
@@ -23,6 +26,7 @@ public class AuthController {
 
     @Autowired private UserService userService;
     @Autowired private PasswordEncoder passwordEncoder;
+    @Autowired private SmsService smsService; // ✅ 추가: 주입
 
     // 디버그용: 매핑이 살아있는지 확인
     @GetMapping("/ping")
@@ -37,6 +41,10 @@ public class AuthController {
         String code = String.valueOf((int)(Math.random() * 900000) + 100000);
         authCodeMap.put(transactionId, code);
 
+        // ✅ 실제 문자 전송: 로컬에서 coolsms.enabled=false면 로그만, true면 실제 발송
+        smsService.sendAuthCode(request.getPhoneNumber(), code);
+
+        // 콘솔 로그 (디버깅용)
         System.out.printf("🔐 인증번호 전송됨 [%s] → 코드: %s%n", transactionId, code);
         System.out.println("▶ 이름: " + request.getName());
         System.out.println("▶ 주민번호: " + request.getIdentificationNumber());
@@ -83,7 +91,7 @@ public class AuthController {
 
     // 3. 회원가입
     @PostMapping("/signup")
-    public ResponseEntity<?> signup(@RequestBody SignupRequest request) {
+    public ResponseEntity<?> signup(@RequestBody @Valid SignupRequest request) {
         if (!verifiedTransactionIds.contains(request.getTransactionId())) {
             return ResponseEntity.badRequest().body(Map.of(
                     "status", 400,
@@ -105,8 +113,9 @@ public class AuthController {
             ));
         }
 
+        // 유효성 통과 후 저장
         User user = new User(
-                (long) (new Random().nextInt(9000) + 1000), // 1000~9999
+                (long) (new Random().nextInt(9000) + 1000),
                 request.getId(),
                 passwordEncoder.encode(request.getPassword()),
                 request.getNickName()
@@ -121,9 +130,15 @@ public class AuthController {
             ));
         }
 
+        // ✅ 응답에 userInfo 포함
         return ResponseEntity.status(201).body(Map.of(
                 "status", 201,
-                "message", "회원가입 성공"
+                "message", "회원가입 성공",
+                "userInfo", Map.of(
+                        "userId", user.getUserId(),
+                        "id", user.getId(),
+                        "nickName", user.getNickName()
+                )
         ));
     }
 

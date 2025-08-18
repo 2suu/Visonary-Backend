@@ -1,79 +1,87 @@
 plugins {
-	id 'java'
-	id 'org.springframework.boot' version '3.5.3'
-	id 'io.spring.dependency-management' version '1.1.7'
+    id 'java'
+    id 'org.springframework.boot' version '3.5.3'
+    id 'io.spring.dependency-management' version '1.1.7'
 }
 
 group = 'esu'
 version = '0.0.1-SNAPSHOT'
 
 java {
-	toolchain {
-		languageVersion = JavaLanguageVersion.of(21)
-	}
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
 }
 
 configurations {
-	compileOnly {
-		extendsFrom annotationProcessor
-	}
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+    // (선택) spring-jcl 경고 줄이기: commons-logging 제거
+    all {
+        exclude group: 'commons-logging', module: 'commons-logging'
+    }
 }
 
 repositories {
-	mavenCentral()
+    mavenCentral()
 }
 
 dependencies {
-	// Spring Boot 기본 스타터
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation 'org.springframework.boot:spring-boot-starter-validation'
-	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    // Spring Boot 기본 스타터
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
 
-	// 데이터 접근
-	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	runtimeOnly 'com.mysql:mysql-connector-j'
+    // 데이터 접근 (JPA)
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 
-	// 보안 & 인증
-	implementation 'org.springframework.boot:spring-boot-starter-security'
-	implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
-	runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
-	runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5'
+    // DB 드라이버
+    runtimeOnly 'com.mysql:mysql-connector-j' // 운영/개발에서 MySQL
+    runtimeOnly 'com.h2database:h2'           // 로컬(H2 인메모리)
 
-	// 외부 연동
-	implementation 'com.google.firebase:firebase-admin:9.2.0'
+    // 보안 & 인증 (JWT)
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
+    runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
+    runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5'
 
-	// Flyway
-	implementation 'org.flywaydb:flyway-core'
-	implementation 'org.flywaydb:flyway-mysql'
+    // Firebase Admin
+    implementation 'com.google.firebase:firebase-admin:9.2.0'
 
-	// Lombok
-	compileOnly 'org.projectlombok:lombok'
-	annotationProcessor 'org.projectlombok:lombok'
+    // Flyway
+    implementation 'org.flywaydb:flyway-core'
+    implementation 'org.flywaydb:flyway-mysql'
 
-	// 빌드/개발 편의
-	developmentOnly 'org.springframework.boot:spring-boot-devtools'
-	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+    // ✅ CoolSMS (Nurigo) SDK
+    implementation 'net.nurigo:sdk:4.3.0'
 
-	// 테스트
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    // Lombok
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
 
-	// Testcontainers (JUnit 5)
-	testImplementation 'org.testcontainers:junit-jupiter:1.20.2'
-	testImplementation 'org.testcontainers:jdbc:1.20.2'
+    // 빌드/개발 편의
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 
-	// MySQL, Redis 컨테이너
-	testImplementation 'org.testcontainers:mysql:1.20.2'
+    // 테스트
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+    // Testcontainers (JUnit 5)
+    testImplementation 'org.testcontainers:junit-jupiter:1.20.2'
+    testImplementation 'org.testcontainers:jdbc:1.20.2'
+    testImplementation 'org.testcontainers:mysql:1.20.2'
 }
 
 test {
-	useJUnitPlatform()
-	// Support/기반 클래스는 테스트 수집에서 제외
-	exclude '**/IntegrationTestSupport.*'
-	exclude '**/*Support.*'
-	exclude '**/support/**'
+    useJUnitPlatform()
+    // Support/기반 클래스는 테스트 수집에서 제외
+    exclude '**/IntegrationTestSupport.*'
+    exclude '**/*Support.*'
+    exclude '**/support/**'
 }
 
 tasks.named('test') {
-	useJUnitPlatform()
+    useJUnitPlatform()
 }
