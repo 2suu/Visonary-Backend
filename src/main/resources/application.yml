@@ -75,4 +75,3 @@ app:
     description: Career/Assessment backend
     version: v1
     server-url: http://localhost:8080
-

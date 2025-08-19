@@ -132,6 +132,7 @@ CREATE TABLE quotes (
                         content VARCHAR(500) NOT NULL,
                         author VARCHAR(255),
                         category VARCHAR(100),
+                        quote_date  DATE NOT NULL,
                         created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
                         updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
