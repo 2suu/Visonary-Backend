@@ -65,9 +65,9 @@ springdoc:
   swagger-ui:
     enabled: true
     path: /swagger-ui
-  packages-to-scan: esu.visionary.api  # 컨트롤러 패키지 루트
-  default-consumes-media-type: application/json
-  default-produces-media-type: application/json
+#  packages-to-scan: esu.visionary.api  # 컨트롤러 패키지 루트
+#  default-consumes-media-type: application/json
+#  default-produces-media-type: application/json
 
 app:
   api:

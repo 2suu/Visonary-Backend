@@ -72,59 +72,82 @@ CREATE TABLE job_recommendations (
                                      CONSTRAINT fk_jr_job FOREIGN KEY (job_id) REFERENCES jobs(job_id)
 );
 
--- roadmap_templates
 CREATE TABLE roadmap_templates (
                                    roadmap_template_id BIGINT PRIMARY KEY AUTO_INCREMENT,
-                                   title VARCHAR(200) NOT NULL,
-                                   description TEXT,
-                                   job_id BIGINT NOT NULL,
-                                   created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-                                   updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                                   title        VARCHAR(200) NOT NULL,
+                                   description  TEXT,
+                                   job_id       BIGINT NOT NULL,
+                                   image_url    VARCHAR(500) NULL COMMENT '이미지는 Amazon S3 경로에 저장', -- ★ 추가
+                                   created_at   DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                                   updated_at   DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
                                    CONSTRAINT fk_rt_job FOREIGN KEY (job_id) REFERENCES jobs(job_id)
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+-- FK/조회용 인덱스
+CREATE INDEX idx_rt_job_id ON roadmap_templates(job_id);
+
+
+-- =========================
 -- roadmap_steps
+-- =========================
 CREATE TABLE roadmap_steps (
-                               roadmap_steps_id BIGINT PRIMARY KEY AUTO_INCREMENT,
-                               roadmap_template_id BIGINT NOT NULL,
-                               step_order INT NOT NULL,
-                               title VARCHAR(200) NOT NULL,
-                               description TEXT,
-                               stage JSON NOT NULL,
-                               created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-                               updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                               roadmap_steps_id     BIGINT PRIMARY KEY AUTO_INCREMENT,
+                               roadmap_template_id  BIGINT NOT NULL,
+                               step_order           INT NOT NULL,
+                               title                VARCHAR(200) NOT NULL,
+                               description          TEXT,
+                               stage                JSON NOT NULL,  -- 단수명 유지
+                               created_at           DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                               updated_at           DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
                                CONSTRAINT fk_rs_tpl FOREIGN KEY (roadmap_template_id) REFERENCES roadmap_templates(roadmap_template_id)
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+CREATE INDEX idx_rs_tpl ON roadmap_steps(roadmap_template_id);
+CREATE INDEX idx_rs_tpl_order ON roadmap_steps(roadmap_template_id, step_order);
+
+
+-- =========================
 -- personal_roadmaps
+-- =========================
 CREATE TABLE personal_roadmaps (
-                                   personal_roadmap_id BIGINT PRIMARY KEY AUTO_INCREMENT,
-                                   user_id BIGINT NOT NULL,
-                                   roadmap_template_id BIGINT NOT NULL,
-                                   title_custom VARCHAR(200),
-                                   progress_percent TINYINT NOT NULL DEFAULT 0,
-                                   is_personalized TINYINT(1) NOT NULL DEFAULT 0,
-                                   created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-                                   updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                                   personal_roadmap_id  BIGINT PRIMARY KEY AUTO_INCREMENT,
+                                   user_id              BIGINT NOT NULL,
+                                   roadmap_template_id  BIGINT NOT NULL,
+                                   title_custom         VARCHAR(200),
+    -- ↓ 옵션: 상태 관리가 필요하면 주석 해제
+                                   status               ENUM('planned','in_progress','completed','paused') NOT NULL DEFAULT 'planned',
+                                   progress_percent     TINYINT NOT NULL DEFAULT 0,
+                                   is_personalized      TINYINT(1) NOT NULL DEFAULT 0,
+                                   created_at           DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                                   updated_at           DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
                                    CONSTRAINT fk_pr_user FOREIGN KEY (user_id) REFERENCES users(user_id),
-                                   CONSTRAINT fk_pr_tpl FOREIGN KEY (roadmap_template_id) REFERENCES roadmap_templates(roadmap_template_id)
-);
+                                   CONSTRAINT fk_pr_tpl  FOREIGN KEY (roadmap_template_id) REFERENCES roadmap_templates(roadmap_template_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+CREATE INDEX idx_pr_user ON personal_roadmaps(user_id);
+CREATE INDEX idx_pr_tpl  ON personal_roadmaps(roadmap_template_id);
+
+
+-- =========================
 -- personal_roadmap_steps
+-- =========================
 CREATE TABLE personal_roadmap_steps (
                                         personal_roadmap_step_id BIGINT PRIMARY KEY AUTO_INCREMENT,
-                                        personal_roadmap_id BIGINT NOT NULL,
-                                        step_order INT NOT NULL,
-                                        title VARCHAR(200) NOT NULL,
-                                        description TEXT,
-                                        stage JSON,
-                                        done_percent TINYINT NOT NULL DEFAULT 0,
-                                        is_done TINYINT(1) NOT NULL DEFAULT 0,
-                                        is_deleted TINYINT(1) NOT NULL DEFAULT 0,
-                                        created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-                                        updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                                        personal_roadmap_id  BIGINT NOT NULL,
+                                        step_order           INT NOT NULL,
+                                        title                VARCHAR(200) NOT NULL,
+                                        description          TEXT,
+                                        stage                JSON,
+                                        done_percent         TINYINT NOT NULL DEFAULT 0,
+                                        is_done              TINYINT(1) NOT NULL DEFAULT 0,
+                                        is_deleted           TINYINT(1) NOT NULL DEFAULT 0,
+                                        created_at           DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                                        updated_at           DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
                                         CONSTRAINT fk_prs_pr FOREIGN KEY (personal_roadmap_id) REFERENCES personal_roadmaps(personal_roadmap_id)
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE INDEX idx_prs_pr ON personal_roadmap_steps(personal_roadmap_id);
+CREATE INDEX idx_prs_pr_order ON personal_roadmap_steps(personal_roadmap_id, step_order);
 
 -- quotes
 CREATE TABLE quotes (
