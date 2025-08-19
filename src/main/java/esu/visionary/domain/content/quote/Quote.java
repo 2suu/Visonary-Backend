@@ -6,6 +6,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -25,11 +26,15 @@ public class Quote {
     @Column(nullable = false, length = 500)
     private String content;
 
-    @Column(length = 255)
-    private String author;
+    @Column(nullable = false, length = 255)
+    private String author;     // ERD: NOT NULL
 
-    @Column(length = 100)
-    private String category;
+    @Column(nullable = false, length = 100)
+    private String category;   // ERD: NOT NULL
+
+    // ERD: date (해당 날짜에 해당하는 명언)
+    @Column(name = "quote_date", nullable = false)
+    private LocalDate date;
 
     @CreatedDate
     @Column(name = "created_at", nullable = false, updatable = false)
