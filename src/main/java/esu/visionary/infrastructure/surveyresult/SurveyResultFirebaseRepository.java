@@ -1,5 +1,6 @@
 package esu.visionary.infrastructure.surveyresult;
 
+import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.DocumentReference;
 import com.google.cloud.firestore.DocumentSnapshot;
 import com.google.cloud.firestore.Firestore;
@@ -41,6 +42,23 @@ public class SurveyResultFirebaseRepository {
             throw new InternalServerErrorException("Firebase interrupted", e);
         } catch (ExecutionException e) {
             throw new InternalServerErrorException("Firebase execution error", e);
+        }
+
+    }
+
+    public Optional<Map<String, Object>> getSessionDoc(Integer surveySessionId) {
+        try {
+            DocumentReference ref = firestore.collection("survey_sessions")
+                    .document(String.valueOf(surveySessionId));
+            ApiFuture<DocumentSnapshot> f = ref.get();
+            DocumentSnapshot snap = f.get();
+            if (!snap.exists()) return Optional.empty();
+            return Optional.ofNullable(snap.getData());
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw new RuntimeException("Firestore interrupted", e);
+        } catch (ExecutionException e) {
+            throw new RuntimeException("Firestore execution error", e);
         }
     }
 }

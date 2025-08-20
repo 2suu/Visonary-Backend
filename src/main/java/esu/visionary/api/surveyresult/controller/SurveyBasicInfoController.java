@@ -1,7 +1,9 @@
-package esu.visionary.api.surveyresult;
+package esu.visionary.api.surveyresult.controller;
 
+import esu.visionary.application.surveyresult.Big5ResultService;
 import esu.visionary.application.surveyresult.SurveyBasicInfoService;
 import esu.visionary.domain.surveyresult.BasicInfoCareerResponse;
+import esu.visionary.domain.surveyresult.Big5ResultResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
@@ -9,6 +11,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.tags.Tags;
+import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -29,6 +32,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class SurveyBasicInfoController {
 
     private final SurveyBasicInfoService service;
+    private final Big5ResultService big5ResultService;
+
+    public Big5ResultController(Big5ResultService service) {
+        this.big5ResultService = service;
+    }
 
     @GetMapping(value = "/{surveySessionId}/results/basic-info-career",
             produces = MediaType.APPLICATION_JSON_VALUE)
@@ -66,5 +74,13 @@ public class SurveyBasicInfoController {
 
         BasicInfoCareerResponse response = service.getBasicInfoCareer(surveySessionId);
         return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/{surveySessionId}/results/big5")
+    public ResponseEntity<?> getBig5(
+            @PathVariable @Min(1) Integer surveySessionId
+    ) {
+        Big5ResultResponse data = service.getBig5Result(surveySessionId);
+        return ResponseEntity.ok(ApiResponse.success(data));
     }
 }
