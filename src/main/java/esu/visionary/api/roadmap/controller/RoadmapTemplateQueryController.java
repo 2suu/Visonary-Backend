@@ -1,7 +1,7 @@
 package esu.visionary.api.roadmap.controller;
 
 import esu.visionary.application.roadmap.service.RoadmapTemplateQueryService;
-import esu.visionary.common.response.ApiResponse;
+import esu.visionary.common.response.CommonResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.constraints.Max;
@@ -36,7 +36,7 @@ public class RoadmapTemplateQueryController {
             - 유효 범위: 1 ~ 20
             """
     )
-    public ApiResponse<?> getTemplates(
+    public CommonResponse<?> getTemplates(
             @RequestParam(name = "count", required = false, defaultValue = "5")
             @Min(value = 1, message = "count는 1 이상이어야 합니다.")
             @Max(value = 20, message = "count 최대 값은 20입니다.")
@@ -44,6 +44,6 @@ public class RoadmapTemplateQueryController {
     ) {
         var data = service.getTopTemplates(count);
         // ApiResponse.success(data) → {code,status,message,data} 형태로 직렬화
-        return ApiResponse.success(data);
+        return CommonResponse.success(data);
     }
 }
