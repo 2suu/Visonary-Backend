@@ -1,7 +1,7 @@
 package esu.visionary.api.content.controller;
 
 import esu.visionary.application.content.QuoteService;
-import esu.visionary.common.response.ApiResponse;
+import esu.visionary.common.response.CommonResponse;
 import esu.visionary.domain.quote.QuoteResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -21,8 +21,8 @@ public class QuoteController {
     @GetMapping
     @Operation(summary = "오늘의 명언 조회",
             description = "쿼리 파라미터 없이 호출 시, 한국 시간 기준 오늘 날짜로 결정된 명언 1개를 반환합니다.")
-    public ResponseEntity<ApiResponse<QuoteResponse>> getToday() {
+    public ResponseEntity<CommonResponse<QuoteResponse>> getToday() {
         QuoteResponse data = quoteService.getTodayQuote();
-        return ResponseEntity.ok(ApiResponse.success(data));
+        return ResponseEntity.ok(CommonResponse.success(data));
     }
 }
