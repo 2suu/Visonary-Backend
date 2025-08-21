@@ -1,10 +1,12 @@
 package esu.visionary.api.surveyresult.controller;
 
 import esu.visionary.application.surveyresult.Big5ResultService;
+import esu.visionary.application.surveyresult.InterestResultService;
 import esu.visionary.application.surveyresult.SurveyBasicInfoService;
 import esu.visionary.common.response.CommonResponse;
 import esu.visionary.domain.surveyresult.BasicInfoCareerResponse;
 import esu.visionary.domain.surveyresult.Big5ResultResponse;
+import esu.visionary.domain.surveyresult.InterestResultResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
@@ -33,6 +35,7 @@ public class SurveyResultController {
 
     private final SurveyBasicInfoService surveyBasicInfoService;
     private final Big5ResultService big5ResultService;
+    private final InterestResultService interestResultService;
 
     // 기본정보/경력
     @GetMapping(value = "/{surveySessionId}/results/basic-info-career",
@@ -139,6 +142,38 @@ public class SurveyResultController {
             @PathVariable("surveySessionId") @Positive int surveySessionId
     ) {
         Big5ResultResponse data = big5ResultService.getBig5Result(surveySessionId);
+        return ResponseEntity.ok(CommonResponse.success(data));
+    }
+
+    @GetMapping(value = "/{surveySessionId}/results/interests", produces = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(summary = "흥미 분석(RIASEC) 결과 조회",
+            description = "설문 세션 ID를 기반으로 RIASEC 흥미 유형 점수와 요약을 조회합니다.")
+    @ApiResponse(responseCode = "200", description = "성공",
+            content = @Content(mediaType = "application/json",
+                    examples = @ExampleObject(name = "성공 예시", value = """
+                {
+                  "code": 200,
+                  "status": "OK",
+                  "message": "SUCCESS",
+                  "data": {
+                    "surveySessionId": 101,
+                    "model": "RIASEC",
+                    "traits": [
+                      { "code": "R", "label": "현실형", "score": 14, "percentile": 68 },
+                      { "code": "I", "label": "탐구형", "score": 15, "percentile": 72 },
+                      { "code": "A", "label": "예술형", "score": 18, "percentile": 90 },
+                      { "code": "S", "label": "사회형", "score": 10, "percentile": 55 },
+                      { "code": "E", "label": "기업형", "score": 9,  "percentile": 42 },
+                      { "code": "C", "label": "관습형", "score": 11, "percentile": 50 }
+                    ],
+                    "summary": "창의·탐구 성향이 강하며, 사람과의 협업보단 개별 탐구/창작에서 강점을 보입니다."
+                  }
+                }
+                """)))
+    public ResponseEntity<CommonResponse<InterestResultResponse>> getInterests(
+            @PathVariable("surveySessionId") @Positive Long surveySessionId
+    ) {
+        InterestResultResponse data = interestResultService.getInterests(surveySessionId.intValue());
         return ResponseEntity.ok(CommonResponse.success(data));
     }
 

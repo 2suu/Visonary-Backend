@@ -3,7 +3,6 @@ package esu.visionary.infrastructure.surveyresult;
 import com.google.cloud.firestore.DocumentSnapshot;
 import com.google.cloud.firestore.Firestore;
 import com.google.cloud.firestore.QuerySnapshot;
-import com.google.firebase.FirebaseApp;
 import esu.visionary.common.exception.InternalServerErrorException;
 import esu.visionary.domain.surveyresult.BasicProfileDoc;
 import lombok.RequiredArgsConstructor;
@@ -21,19 +20,6 @@ public class SurveyResultFirebaseRepository {
 
     private final Firestore firestore; // com.google.cloud.firestore.Firestore
     private static final String COLLECTION = "survey_analysis_results"; // 스키마와 일치
-
-    // Big5 전용: 표준 경로만 본다
-    public Optional<Map<String, Object>> getBig5Root(Long sessionId) {
-        String sid = String.valueOf(sessionId);
-        try {
-            DocumentSnapshot doc = firestore.collection(COLLECTION).document(sid).get().get();
-            if (!doc.exists()) return Optional.empty();
-            return Optional.ofNullable(doc.getData());
-        } catch (Exception e) {
-            log.warn("[Big5] read error {}/{} : {}", COLLECTION, sid, e.toString());
-            return Optional.empty();
-        }
-    }
 
     public Optional<BasicProfileDoc> getBasicProfile(Long surveySessionId) {
         try {
