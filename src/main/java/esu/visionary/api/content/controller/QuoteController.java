@@ -16,7 +16,10 @@ import org.springframework.web.bind.annotation.RestController;
 public class QuoteController {
 
     private final QuoteService quoteService;
-    public QuoteController(QuoteService quoteService) { this.quoteService = quoteService; }
+
+    public QuoteController(QuoteService quoteService) {
+        this.quoteService = quoteService;
+    }
 
     @GetMapping
     @Operation(summary = "오늘의 명언 조회",

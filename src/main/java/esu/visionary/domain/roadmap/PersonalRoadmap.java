@@ -1,6 +1,10 @@
 package esu.visionary.domain.roadmap;
 
+<<<<<<< HEAD
 import esu.visionary.domain.user.model.User2;
+=======
+import esu.visionary.domain.user.model.User;
+>>>>>>> aff50e0 (최종 버전)
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.JdbcTypeCode;
@@ -27,7 +31,11 @@ public class PersonalRoadmap {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false) // FK → users.user_id
+<<<<<<< HEAD
     private User2 user;
+=======
+    private User user;
+>>>>>>> aff50e0 (최종 버전)
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "roadmap_template_id", nullable = false) // FK → roadmap_templates.roadmap_template_id

@@ -1,5 +1,6 @@
 package esu.visionary.infrastructure.content.repository;
 
+<<<<<<< HEAD
 import esu.visionary.domain.content.quote.Quote;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -13,4 +14,7 @@ public interface QuoteRepository extends JpaRepository<Quote, Long> {
 
     // 같은 날짜가 이미 있는지 체크 (유니크 보장/시드 시 유용)
     boolean existsByDate(LocalDate date);
+=======
+public class QuoteRepository {
+>>>>>>> aff50e0 (최종 버전)
 }

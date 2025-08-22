@@ -8,3 +8,4 @@ import org.springframework.stereotype.Repository;
 public interface SurveySessionRepository extends JpaRepository<SurveySession, Long> {
     // 필요하면 커스텀 쿼리 추가
 }
+

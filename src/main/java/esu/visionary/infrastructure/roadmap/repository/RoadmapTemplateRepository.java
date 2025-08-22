@@ -1,5 +1,6 @@
 package esu.visionary.infrastructure.roadmap.repository;
 
+<<<<<<< HEAD
 import esu.visionary.domain.roadmap.RoadmapTemplate;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -11,4 +12,7 @@ public interface RoadmapTemplateRepository extends JpaRepository<RoadmapTemplate
 
     @Query("select t from RoadmapTemplate t order by t.id desc")
     List<RoadmapTemplate> findLatest(org.springframework.data.domain.Pageable pageable); // ★ FQN로 못박기
+=======
+public class RoadmapTemplateRepository {
+>>>>>>> aff50e0 (최종 버전)
 }

@@ -1,82 +1,82 @@
 plugins {
-	id 'java'
-	id 'org.springframework.boot' version '3.5.3'
-	id 'io.spring.dependency-management' version '1.1.7'
+    id 'java'
+    id 'org.springframework.boot' version '3.5.3'
+    id 'io.spring.dependency-management' version '1.1.7'
 }
 
 group = 'esu'
 version = '0.0.1-SNAPSHOT'
 
 java {
-	toolchain {
-		languageVersion = JavaLanguageVersion.of(21)
-	}
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
 }
 
 configurations {
-	compileOnly {
-		extendsFrom annotationProcessor
-	}
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+    // (선택) spring-jcl 경고 줄이기: commons-logging 제외
+    all {
+        exclude group: 'commons-logging', module: 'commons-logging'
+    }
 }
 
 repositories {
-	mavenCentral()
+    mavenCentral()
 }
 
 dependencies {
-	// Spring Boot 기본 스타터
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation 'org.springframework.boot:spring-boot-starter-validation'
-	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    // --- Spring Boot 기본 ---
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 
-	// 데이터 접근
-	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	runtimeOnly 'com.mysql:mysql-connector-j'
+    // --- DB 드라이버 ---
+    runtimeOnly 'com.mysql:mysql-connector-j'          // 운영/개발: MySQL
+    runtimeOnly 'com.h2database:h2:2.2.224'            // 로컬/테스트: H2 (프로필로 사용)
 
-	// 보안 & 인증
-	implementation 'org.springframework.boot:spring-boot-starter-security'
-	implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
-	runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
-	runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5'
+    // --- JWT ---
+    implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
+    runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
+    runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5'
 
-	// 외부 연동
-	implementation 'com.google.firebase:firebase-admin:9.2.0'
+    // --- 외부 연동 ---
+    implementation 'com.google.firebase:firebase-admin:9.2.0'   // Firebase Admin
+    implementation 'net.nurigo:sdk:4.3.0'                       // CoolSMS (Nurigo)
 
-	// Flyway
-	implementation 'org.flywaydb:flyway-core'
-	implementation 'org.flywaydb:flyway-mysql'
+    // --- 마이그레이션 ---
+    implementation 'org.flywaydb:flyway-core'
+    implementation 'org.flywaydb:flyway-mysql'
 
-	// Swagger
-	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.7.0'
+    // --- Swagger / OpenAPI ---
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.7.0'
 
-	// Lombok
-	compileOnly 'org.projectlombok:lombok'
-	annotationProcessor 'org.projectlombok:lombok'
+    // --- Lombok ---
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 
-	// 빌드/개발 편의
-	developmentOnly 'org.springframework.boot:spring-boot-devtools'
-	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+    // --- 개발 편의 ---
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
 
-	// 테스트
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    // --- 테스트 ---
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
-	// Testcontainers (JUnit 5)
-	testImplementation 'org.testcontainers:junit-jupiter:1.20.2'
-	testImplementation 'org.testcontainers:jdbc:1.20.2'
-
-	// MySQL, Redis 컨테이너
-	testImplementation 'org.testcontainers:mysql:1.20.2'
+    // Testcontainers
+    testImplementation 'org.testcontainers:junit-jupiter:1.20.2'
+    testImplementation 'org.testcontainers:jdbc:1.20.2'
+    testImplementation 'org.testcontainers:mysql:1.20.2'
 }
 
 test {
-	useJUnitPlatform()
-	// Support/기반 클래스는 테스트 수집에서 제외
-	exclude '**/IntegrationTestSupport.*'
-	exclude '**/*Support.*'
-	exclude '**/support/**'
-}
-
-tasks.named('test') {
-	useJUnitPlatform()
+    useJUnitPlatform()
+    // Support/기반 클래스는 테스트 수집 제외
+    exclude '**/IntegrationTestSupport.*'
+    exclude '**/*Support.*'
+    exclude '**/support/**'
 }

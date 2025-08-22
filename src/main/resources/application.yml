@@ -1,7 +1,8 @@
 spring:
   application:
     name: visionary
-# 기본 활성 프로필
+
+  # 기본 활성 프로필
   profiles:
     default: local
 
@@ -22,11 +23,13 @@ spring:
       hibernate:
         format_sql: true
         jdbc.time_zone: Asia/Seoul
+        # 네이밍 전략은 기본(SpringPhysicalNamingStrategy) 사용
+        # created_at/updated_at은 @Column(name="...")로 명시 매핑
 
   flyway:
     enabled: true
     locations: classpath:db/migration
-    clean-disabled:  false
+    clean-disabled: false
 
 server:
   port: 8080
@@ -46,13 +49,21 @@ jwt:
   refresh-token-expiration-ms: 604800000  # 7일
   access-token-header: "Authorization"
   refresh-token-cookie: "Refresh-Token"
-  secret: "${JWT_SECRET}"  # 환경변수로 덮어쓰기
+  secret: "${JWT_SECRET:}"  # 운영/로컬 공통 키: 환경변수 우선
 
+# ─────────────────────────────────────────────────────────────
+# Firebase Admin 자격증명 설정
+# - 우선순위(권장): BASE64 > GOOGLE_APPLICATION_CREDENTIALS(경로) > classpath
+#   1) FIREBASE_CREDENTIALS_BASE64 : 서비스계정 JSON을 base64로 넣음 (CI/Docker에 적합)
+#   2) GOOGLE_APPLICATION_CREDENTIALS : 파일 시스템 경로 (예: /etc/secrets/firebase.json)
+#   3) firebase.classpath-json : classpath 내 JSON (로컬 전용; Git 커밋 금지)
+# ─────────────────────────────────────────────────────────────
 firebase:
-  enabled: false   # 공통으로 쓰려면 true, 운영에서 안 쓰면 false
-  credentials:
-    path: ${FIREBASE_CREDENTIALS_PATH:}      # 파일 경로 or classpath
-    base64: ${FIREBASE_CREDENTIALS_BASE64:}  # 환경변수 방식일 때만
+  enabled: false   # 운영에서 Firebase 안 쓰면 false
+  use-google-default-credentials: true
+  service-account-json-path: "${FIREBASE_CREDENTIALS_PATH:}"     # (옵션) 파일 경로
+  service-account-json-base64: "${FIREBASE_CREDENTIALS_BASE64:}" # (옵션) base64 원문
+  classpath-json: "firebase/firebase-service-account.json"       # (옵션) classpath 위치(로컬 전용)
 
 logging:
   level:
