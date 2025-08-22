@@ -72,6 +72,7 @@ CREATE TABLE job_recommendations (
                                      CONSTRAINT fk_jr_job FOREIGN KEY (job_id) REFERENCES jobs(job_id)
 );
 
+<<<<<<< HEAD
 CREATE TABLE roadmap_templates (
                                    roadmap_template_id BIGINT PRIMARY KEY AUTO_INCREMENT,
                                    title        VARCHAR(200) NOT NULL,
@@ -148,6 +149,61 @@ CREATE TABLE personal_roadmap_steps (
 
 CREATE INDEX idx_prs_pr ON personal_roadmap_steps(personal_roadmap_id);
 CREATE INDEX idx_prs_pr_order ON personal_roadmap_steps(personal_roadmap_id, step_order);
+=======
+-- roadmap_templates
+CREATE TABLE roadmap_templates (
+                                   roadmap_template_id BIGINT PRIMARY KEY AUTO_INCREMENT,
+                                   title VARCHAR(200) NOT NULL,
+                                   description TEXT,
+                                   job_id BIGINT NOT NULL,
+                                   created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                                   updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                                   CONSTRAINT fk_rt_job FOREIGN KEY (job_id) REFERENCES jobs(job_id)
+);
+
+-- roadmap_steps
+CREATE TABLE roadmap_steps (
+                               roadmap_steps_id BIGINT PRIMARY KEY AUTO_INCREMENT,
+                               roadmap_template_id BIGINT NOT NULL,
+                               step_order INT NOT NULL,
+                               title VARCHAR(200) NOT NULL,
+                               description TEXT,
+                               stage JSON NOT NULL,
+                               created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                               updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                               CONSTRAINT fk_rs_tpl FOREIGN KEY (roadmap_template_id) REFERENCES roadmap_templates(roadmap_template_id)
+);
+
+-- personal_roadmaps
+CREATE TABLE personal_roadmaps (
+                                   personal_roadmap_id BIGINT PRIMARY KEY AUTO_INCREMENT,
+                                   user_id BIGINT NOT NULL,
+                                   roadmap_template_id BIGINT NOT NULL,
+                                   title_custom VARCHAR(200),
+                                   progress_percent TINYINT NOT NULL DEFAULT 0,
+                                   is_personalized TINYINT(1) NOT NULL DEFAULT 0,
+                                   created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                                   updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                                   CONSTRAINT fk_pr_user FOREIGN KEY (user_id) REFERENCES users(user_id),
+                                   CONSTRAINT fk_pr_tpl FOREIGN KEY (roadmap_template_id) REFERENCES roadmap_templates(roadmap_template_id)
+);
+
+-- personal_roadmap_steps
+CREATE TABLE personal_roadmap_steps (
+                                        personal_roadmap_step_id BIGINT PRIMARY KEY AUTO_INCREMENT,
+                                        personal_roadmap_id BIGINT NOT NULL,
+                                        step_order INT NOT NULL,
+                                        title VARCHAR(200) NOT NULL,
+                                        description TEXT,
+                                        stage JSON,
+                                        done_percent TINYINT NOT NULL DEFAULT 0,
+                                        is_done TINYINT(1) NOT NULL DEFAULT 0,
+                                        is_deleted TINYINT(1) NOT NULL DEFAULT 0,
+                                        created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                                        updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                                        CONSTRAINT fk_prs_pr FOREIGN KEY (personal_roadmap_id) REFERENCES personal_roadmaps(personal_roadmap_id)
+);
+>>>>>>> aff50e0 (최종 버전)
 
 -- quotes
 CREATE TABLE quotes (
@@ -155,7 +211,10 @@ CREATE TABLE quotes (
                         content VARCHAR(500) NOT NULL,
                         author VARCHAR(255),
                         category VARCHAR(100),
+<<<<<<< HEAD
                         quote_date  DATE NOT NULL,
+=======
+>>>>>>> aff50e0 (최종 버전)
                         created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
                         updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );

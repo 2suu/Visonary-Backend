@@ -1,97 +1,71 @@
 package esu.visionary.api.survey.request;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.*;
+
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
+@Getter @Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class SurveyResultRequest {
+
+    // 기본 정보
+    @JsonProperty("유저고유Id")
     private Long userId;
+
+    @JsonProperty("이름")
     private String name;
-    private int age;
+
+    @JsonProperty("나이")
+    private Integer age;
+
+    @JsonProperty("성별")
     private String gender;
+
+    @JsonProperty("경제상황")
     private String economicStatus;
-    private List<String> interest;
-    private int minimumExpectedSalary;
+
+    @JsonProperty("관심분야")
+    private String interest;
+
+    @JsonProperty("최소기대임금")
+    private Integer minimumExpectedSalary;
+
+    @JsonProperty("가치관")
     private String value;
-    private Map<String, Integer> traits;
-    private boolean processed;
-    private String createdAt;
 
-    public SurveyResultRequest() {}
+    @JsonProperty("처리여부")
+    private Boolean processed;
 
-    public Long getUserId() {
-        return userId;
-    }
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
+    // createdAt은 클라이언트에서 안 보내도 됨 (서버에서 자동 세팅 가능)
+    private LocalDateTime createdAt;
 
-    public String getName() {
-        return name;
-    }
-    public void setName(String name) {
-        this.name = name;
-    }
+    /* ---------- 성향(점수) 입력 두 가지 형식 모두 지원 ---------- */
 
-    public int getAge() {
-        return age;
-    }
-    public void setAge(int age) {
-        this.age = age;
-    }
+    // 1) 한글 키로 들어오는 배열 형태 (예: "성향": [{"questionId":1,"question":"...","answer":3}, ...])
+    @JsonProperty("성향")
+    private List<TraitAnswer> traitsList;
 
-    public String getGender() {
-        return gender;
-    }
-    public void setGender(String gender) {
-        this.gender = gender;
-    }
+    // 2) 영문/맵 형태 (예: "traits": {"개방성": 3, "외향성": 4, ...})
+    //   한글 키를 쓰고 싶다면 "성향점수": {...} 로도 받게 해둠
+    @JsonProperty("traits")
+    private Map<String, Integer> traitsMap;
 
-    public String getEconomicStatus() {
-        return economicStatus;
-    }
-    public void setEconomicStatus(String economicStatus) {
-        this.economicStatus = economicStatus;
-    }
+    @JsonProperty("성향점수")
+    private Map<String, Integer> traitsMapKo;
 
-    public List<String> getInterest() {
-        return interest;
-    }
-    public void setInterest(List<String> interest) {
-        this.interest = interest;
-    }
-
-    public int getMinimumExpectedSalary() {
-        return minimumExpectedSalary;
-    }
-    public void setMinimumExpectedSalary(int minimumExpectedSalary) {
-        this.minimumExpectedSalary = minimumExpectedSalary;
-    }
-
-    public String getValue() {
-        return value;
-    }
-    public void setValue(String value) {
-        this.value = value;
-    }
-
-    public Map<String, Integer> getTraits() {
-        return traits;
-    }
-    public void setTraits(Map<String, Integer> traits) {
-        this.traits = traits;
-    }
-
-    public boolean isProcessed() {
-        return processed;
-    }
-    public void setProcessed(boolean processed) {
-        this.processed = processed;
-    }
-
-    public String getCreatedAt() {
-        return createdAt;
-    }
-    public void setCreatedAt(String createdAt) {
-        this.createdAt = createdAt;
+    @Getter @Setter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class TraitAnswer {
+        private Integer questionId;
+        private String question;
+        private Integer answer;
     }
 }

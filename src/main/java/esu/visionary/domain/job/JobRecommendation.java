@@ -1,5 +1,6 @@
 package esu.visionary.domain.job;
 
+<<<<<<< HEAD
 import esu.visionary.domain.user.model.User2;
 import jakarta.persistence.*;
 import lombok.*;
@@ -47,4 +48,27 @@ public class JobRecommendation {
     @LastModifiedDate
     @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
+=======
+import esu.visionary.common.entity.BaseTimeEntity;
+import esu.visionary.domain.user.model.User; // ✅ 여기로 변경
+import jakarta.persistence.*;
+import lombok.*;
+
+@Entity
+@Table(name = "job_recommendation")
+@Getter @Setter
+@NoArgsConstructor @AllArgsConstructor @Builder
+public class JobRecommendation extends BaseTimeEntity {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    // ✅ 연관관계 대상 타입을 User로
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "user_id", nullable = false) // users.id FK
+    private User user;
+
+    // ... 나머지 필드들
+>>>>>>> aff50e0 (최종 버전)
 }

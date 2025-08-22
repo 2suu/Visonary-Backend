@@ -1,7 +1,11 @@
 package esu.visionary.domain.survey;
 
 import esu.visionary.domain.survey.enums.SurveyStatus;
+<<<<<<< HEAD
 import esu.visionary.domain.user.model.User2;
+=======
+import esu.visionary.domain.user.model.User;
+>>>>>>> aff50e0 (최종 버전)
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
@@ -26,7 +30,11 @@ public class SurveySession {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)   // FK → users.user_id
+<<<<<<< HEAD
     private User2 user;
+=======
+    private User user;
+>>>>>>> aff50e0 (최종 버전)
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "survey_form_id", nullable = false)  // FK → survey_forms.survey_form_id

@@ -23,10 +23,10 @@ public class FirebaseUserService {
                     .set(userData);
 
             WriteResult result = future.get();
-            System.out.println("✅ Firebase 유저 저장 완료: " + result.getUpdateTime());
+            System.out.println("Firebase 유저 저장 완료: " + result.getUpdateTime());
 
         } catch (Exception e) {
-            System.err.println("❌ Firebase 유저 저장 실패");
+            System.err.println("Firebase 유저 저장 실패");
             e.printStackTrace();
         }
     }
